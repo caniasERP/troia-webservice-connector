@@ -1,11 +1,9 @@
 package com.ias.webservice.connector.test;
 
-import java.net.URL;
-
-import com.ias.webservice.CaniasResponse;
-import com.ias.webservice.CaniasWebService;
-import com.ias.webservice.CaniasWebServiceServiceLocator;
 import com.ias.webservice.LoginResponse;
+import com.ias.webservice.connector.LoginParams;
+import com.ias.webservice.connector.WebServiceConnector;
+import com.ias.webservice.connector.WebServiceResponse;
 
 public class TroiaWebServiceTesterConsole {
 
@@ -15,26 +13,22 @@ public class TroiaWebServiceTesterConsole {
 
 		try {
 
-			CaniasWebServiceServiceLocator iLocator = new CaniasWebServiceServiceLocator();
+			WebServiceConnector iConnector = new WebServiceConnector(strWSDLPath);
+			
 
-			CaniasWebService iService = iLocator.getCaniasWebService(new URL(strWSDLPath));
-			
-			LoginResponse iLogin = iService.login("00", "E", "CANIAS", "IAS604", "192.168.0.7/502", "btan", "1", false, false, "", "");
+			LoginParams iParams = new LoginParams("00", "E", "CANIAS", "IAS604", "192.168.0.7/502", "btan", "XXXX", false, false, "", "");
 
-			
-			String parameters = "<PARAMETERS><PARAM>web service parameter</PARAM></PARAMETERS>"; 
-			//parameters = "<PARAMETERS><PARAM type=\"VECTOR\"><VECTOR><ITEM><NAME>N1</NAME><TYPE>STRING</TYPE><VALUE>N1VALUE</VALUE></ITEM><ITEM><NAME>N1</NAME><TYPE>STRING</TYPE><VALUE>N1VALUE</VALUE></ITEM></VECTOR></PARAM><PARAM type=\"TABLE\"><MYTABLE><ROW><COL1>col1val</COL1><COL2>col2val</COL2></ROW><ROW><COL1>col1val</COL1><COL2>col2val</COL2></ROW><ROW><COL1>col1val</COL1><COL2>col2val</COL2></ROW></MYTABLE></PARAM></PARAMETERS>";
-			//parameters = "<PARAMETERS><PARAM type=\"TABLE\"><MYTABLE><ROW><COL1>col1val</COL1><COL2>col2val</COL2></ROW><ROW><COL1>col1val</COL1><COL2>col2val</COL2></ROW><ROW><COL1>col1val</COL1><COL2>col2val</COL2></ROW></MYTABLE></PARAM></PARAMETERS>";
-			
+			LoginResponse iLogin = iConnector.login(iParams);
 			
 			if (iLogin.isSuccess()) {
 
+				String parameters = "<PARAMETERS><PARAM>web service parameter</PARAM></PARAMETERS>"; 
 				
-				CaniasResponse iResponse = iService.callService(iLogin.getSessionId(), iLogin.getSecurityKey(), "RDTEST", parameters, false, false, "", 1);
+				WebServiceResponse iResponse = iConnector.callService("RDTEST", parameters, false, false, "", 1);
 				
-				System.out.println(iResponse.getResponse().getValue());	
+				System.out.println(iResponse.getStringResponse());	
 				
-				iService.logout(iLogin.getSessionId());
+				iConnector.logOut();
 			}
 
 		} catch (Exception e) {
