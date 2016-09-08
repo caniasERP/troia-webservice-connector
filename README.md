@@ -7,7 +7,7 @@ A simple java api to connect troia platform via web service 2.0. Also contains a
 
 	WebServiceConnector iConnector = new WebServiceConnector(strWSDLUrl);
 				
-	LoginParams iParams = new LoginParams("00", "E", "CANIAS", "IAS604", "192.168.0.7/S1", "btan", "XXXX", false, false, "", "");
+	LoginParams iParams = new LoginParams("00", "E", "LOCAL", "IAS604", "192.168.0.7/S1", "btan", "XX", false, false, "", "");
 	LoginResponse iLogin = iConnector.login(iParams);
 
 	if (iLogin.isSuccess()) {
