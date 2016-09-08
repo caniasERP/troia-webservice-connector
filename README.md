@@ -1,5 +1,5 @@
 # troia-webservice-connector
-A simple java api to connect troia platform via web service 2.0
+A simple java api to connect troia platform via web service 2.0. Also contains a web service testing tool which has a swing gui, to run this testing tool double click binar\troia-web-service-connector-x.x.x.jar file.
 
 #usage
 
